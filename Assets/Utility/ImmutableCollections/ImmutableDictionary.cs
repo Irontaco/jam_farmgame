@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-public struct ImmutableDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
+public readonly struct ImmutableDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
 {
     private readonly Dictionary<TKey, TValue> _underlyingDictionary;
 
