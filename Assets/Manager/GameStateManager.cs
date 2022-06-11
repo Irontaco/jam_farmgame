@@ -25,4 +25,9 @@ public class GameStateManager : MonoBehaviour
 
         InputManager = new InputManager(this);
     }
+
+    private void FixedUpdate()
+    {
+        InputManager.GetWorldSpaceMousePosition();
+    }
 }

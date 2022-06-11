@@ -23,6 +23,32 @@ public class InputManager
         this.gameStateManager = gameStateManager;
     }
 
+    public void GetWorldSpaceMousePosition()
+    {
+        Ray Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+        if(Physics.Raycast(Ray, out RaycastHit RayHit))
+        {
+            Debug.DrawLine(Ray.origin, RayHit.point);
+
+            //GameObject DebugTileMarker = GameObject.CreatePrimitive(PrimitiveType.Quad);
+
+            Tile DebugTileGet = gameStateManager.WorldTileManager.GetTileAt(Mathf.RoundToInt(RayHit.point.x), Mathf.RoundToInt(RayHit.point.z));
+
+            Debug.Log("TILEPOS X = [" + DebugTileGet.X + "] Z = [" + DebugTileGet.Z + "]");
+            Debug.Log("RAYHITPOS X = [" + Mathf.RoundToInt(RayHit.point.x) + "] Z = [" + Mathf.RoundToInt(RayHit.point.z) + "]");
+            gameStateManager.WorldTileManager.ChangeTileType(DebugTileGet, TileType.Virtual);
+            gameStateManager.WorldTileManager.WorldMeshData.UpdateWorldMesh();
+
+            /*DebugTileMarker.transform.position = new Vector3(DebugTileGet.X, 0.05f, DebugTileGet.Z);
+            DebugTileMarker.transform.Rotate(new Vector3(90f, 0, 0));
+            DebugTileMarker.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);*/
+
+
+        }
+
+    }
+
     public Vector2 GetMovement()
     {
         Vector2 keyboardInput = new Vector2(
