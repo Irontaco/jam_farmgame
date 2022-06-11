@@ -71,7 +71,7 @@ public class BasicPlayerController : MonoBehaviour
         {
             // The walking animations mess with the sprite position
             // so reset it every time we switch
-            spriteAnimator.transform.position = transform.position + spriteRelativePosition;
+            spriteAnimator.transform.localPosition = spriteRelativePosition;
             spriteAnimator.Play(newState);
         }
         
