@@ -12,16 +12,17 @@ public class WorldTileManager
 
     public WorldData WorldData;
     private GameObject WorldMeshGO;
+    public WorldMesh WorldMeshData;
 
     private Dictionary<int, List<Vector2>> TileSpriteLibrary;
 
-    //1 - floor_purple
-    //2 - floor_blue
-    //3 - floor_yellow
-    //4 - floor_green
-    //5 - floor_preview
-    //6-16 - unused
-    //17-42 - space
+    //0 - floor_purple
+    //1 - floor_blue
+    //2 - floor_yellow
+    //3 - floor_green
+    //4 - floor_preview
+    //5-15 - unused
+    //16-41 - space
 
     public WorldTileManager(WorldData worldData)
     {
@@ -33,23 +34,22 @@ public class WorldTileManager
         WorldMeshGO.transform.parent = GameObject.Find("MeshBuilder").transform;
 
         //Create a WorldMesh component that holds the mesh data.
-        WorldMesh WorldMesh = WorldMeshGO.AddComponent<WorldMesh>();
-        WorldMesh.MeshData = WorldMeshGO.GetComponent<MeshFilter>().mesh;
-        WorldMesh.WorldData = WorldData;
+        WorldMeshData = WorldMeshGO.AddComponent<WorldMesh>();
+        WorldMeshData.MeshData = WorldMeshGO.GetComponent<MeshFilter>().mesh;
+        WorldMeshData.WorldData = WorldData;
 
         //Makes sure the center of each tile in the scene space maps exactly to coordinates in the WorldData array
         WorldMeshGO.transform.position = new Vector3(-0.5f, 0, -0.5f);
 
-        WorldMesh.MapTilesToMeshData();
-        WorldMesh.UVs = WorldMesh.MeshData.uv;
+        WorldMeshData.MapTilesToMeshData();
+        WorldMeshData.UVs = WorldMeshData.MeshData.uv;
 
         foreach(Tile tile in WorldData.WorldTiles)
         {
             ChangeTileType(tile, TileType.Floor);
-            WorldMesh.SetTileTexture(tile, TileSpriteLibrary[1]);
         }
 
-        WorldMesh.UpdateWorldMesh();
+        WorldMeshData.UpdateWorldMesh();
     }
 
 
@@ -61,12 +61,15 @@ public class WorldTileManager
         {
             case TileType.Impassable:
                 tile.Examine = "This is open space!";
+                WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[17]);
                 break;
             case TileType.Floor:
                 tile.Examine = "There's some flooring here.";
+                WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[1]);
                 break;
             case TileType.Virtual:
                 tile.Examine = "You ain't supposed to look at this!";
+                WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[4]);
                 break;
         }
 
