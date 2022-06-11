@@ -7,9 +7,13 @@ using UnityEngine;
 public class GameStateManager : MonoBehaviour
 {
 
-    public WorldTileManager WorldTileManager;
+    public WorldTileManager WorldTileManager { get; private set; }
 
-    WorldData CurrentWorldData;
+    public InputManager InputManager { get; private set; }
+    
+    public WorldData CurrentWorldData { get; private set; }
+
+    public Config CurrentConfig { get; private set; } = Config.Default;
 
     void Start()
     { 
@@ -19,6 +23,7 @@ public class GameStateManager : MonoBehaviour
         //Instantiate the WorldTileManager, which creates the necessary structures for the map and it's rendering to begin.
         WorldTileManager = new WorldTileManager(CurrentWorldData);
 
+        InputManager = new InputManager(this);
     }
 
 }
