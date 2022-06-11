@@ -20,6 +20,12 @@ public class ViewManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isFollowingPlayer)
+        {
+            MainCamera.transform.position = new Vector3(Player.transform.position.x, 10f, Player.transform.position.z - 20f);
+            MainCamera.fieldOfView = 20;
+        }
+
     }
 
     public void MoveCamera(Vector3 Movement)
@@ -40,6 +46,5 @@ public class ViewManager : MonoBehaviour
         //Clamp it, this sets the minimum-maximum orthographic size.
         MainCamera.orthographicSize = Mathf.Clamp(MainCamera.orthographicSize, 1f, 70f);
     }
-
 
 }
