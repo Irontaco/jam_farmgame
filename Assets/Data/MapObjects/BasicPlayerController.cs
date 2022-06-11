@@ -90,8 +90,9 @@ public class BasicPlayerController : MonoBehaviour
         prevWalkDir = walkDir;
     }
 
+    private const float CameraDistanceFromPlayer = 8f;
     private void UpdateCamera()
     {
-        camera.transform.position = transform.position + new Vector3(0f, 4f, -8f);
+        camera.transform.position = transform.position - camera.transform.forward * CameraDistanceFromPlayer;
     }
 }
