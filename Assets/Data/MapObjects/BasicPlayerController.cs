@@ -9,6 +9,7 @@ public class BasicPlayerController : MonoBehaviour
     private Animator spriteAnimator;
     private Vector3 spriteRelativePosition;
     private Camera camera;
+    private Rigidbody rigidBody;
     
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class BasicPlayerController : MonoBehaviour
         camera = FindObjectOfType<Camera>();
         spriteAnimator = GetComponentInChildren<Animator>();
         spriteRelativePosition = spriteAnimator.transform.position - transform.position;
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     private static ImmutableDictionary<InputManager.Direction, int> CreateDirectionAnimAssoc(
@@ -52,11 +54,12 @@ public class BasicPlayerController : MonoBehaviour
         UpdateCamera();
     }
 
+    private const float MovementSpeed = 4.0f;
     private void UpdateMovement()
     {
         var inputManager = gameStateManager.InputManager;
-        var movement = inputManager.GetMovement();
-        transform.position += new Vector3(movement.x * 0.1f, 0f, movement.y * 0.1f);
+        var movement = inputManager.GetMovement() * MovementSpeed;
+        rigidBody.velocity = new Vector3(movement.x, 0f, movement.y);
     }
     
     private void UpdateAnimation()
@@ -93,6 +96,6 @@ public class BasicPlayerController : MonoBehaviour
     private const float CameraDistanceFromPlayer = 8f;
     private void UpdateCamera()
     {
-        camera.transform.position = transform.position - camera.transform.forward * CameraDistanceFromPlayer;
+        camera.transform.position = rigidBody.transform.position - camera.transform.forward * CameraDistanceFromPlayer;
     }
 }
