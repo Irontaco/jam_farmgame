@@ -17,7 +17,7 @@ public class BasicPlayerController : MonoBehaviour
         gameStateManager = FindObjectOfType<GameStateManager>();
         camera = FindObjectOfType<Camera>();
         spriteAnimator = GetComponentInChildren<Animator>();
-        spriteRelativePosition = spriteAnimator.transform.position - transform.position;
+        spriteRelativePosition = spriteAnimator.transform.localPosition;
         rigidBody = GetComponent<Rigidbody>();
     }
 
