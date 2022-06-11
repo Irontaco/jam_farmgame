@@ -78,10 +78,9 @@ public class BasicPlayerController : MonoBehaviour
         var walkDir = InputManager.MovementToDirection(movement);
         if (walkDir != InputManager.Direction.None)
         {
-            int newState = dirToWalkAnim[walkDir];
-            int prevState = spriteAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash;
-            if (newState != prevState)
+            if (walkDir != prevWalkDir)
             {
+                int newState = dirToWalkAnim[walkDir];
                 playAnimation(newState);
             }
         }
