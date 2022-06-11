@@ -32,9 +32,9 @@ public class WorldMesh : MonoBehaviour
 
         int quadIndex = 0;
 
-        for(int x = 0; x < WorldData.SizeX; x++)
+        for(int z = 0; z < WorldData.SizeZ; z++)
         {
-            for(int z = 0; z < WorldData.SizeZ; z++)
+            for(int x = 0; x < WorldData.SizeX; x++)
             {
                 Tile tile = WorldData.WorldTiles[x, z];
 
