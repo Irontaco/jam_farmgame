@@ -24,6 +24,10 @@ public class GameStateManager : MonoBehaviour
         WorldTileManager = new WorldTileManager(CurrentWorldData);
 
         InputManager = new InputManager(this);
+        
+        //TODO: remove?
+        var camera = FindObjectOfType<CameraController>();
+        var playerController = FindObjectOfType<BasicPlayerController>();
+        camera.trackedObject = playerController.gameObject;
     }
-
 }

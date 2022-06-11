@@ -8,14 +8,12 @@ public class BasicPlayerController : MonoBehaviour
     private GameStateManager gameStateManager;
     private Animator spriteAnimator;
     private Vector3 spriteRelativePosition;
-    private Camera camera;
     private Rigidbody rigidBody;
     
     // Start is called before the first frame update
     void Start()
     {
         gameStateManager = FindObjectOfType<GameStateManager>();
-        camera = FindObjectOfType<Camera>();
         spriteAnimator = GetComponentInChildren<Animator>();
         spriteRelativePosition = spriteAnimator.transform.localPosition;
         rigidBody = GetComponent<Rigidbody>();
@@ -51,7 +49,6 @@ public class BasicPlayerController : MonoBehaviour
     {
         UpdateMovement();
         UpdateAnimation();
-        UpdateCamera();
     }
 
     private const float MovementSpeed = 4.0f;
@@ -90,11 +87,5 @@ public class BasicPlayerController : MonoBehaviour
             playAnimation(newState);
         }
         prevWalkDir = walkDir;
-    }
-
-    private const float CameraDistanceFromPlayer = 8f;
-    private void UpdateCamera()
-    {
-        camera.transform.position = rigidBody.transform.position - camera.transform.forward * CameraDistanceFromPlayer;
     }
 }
