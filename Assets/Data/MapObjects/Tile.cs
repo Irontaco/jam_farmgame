@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileType { Void, Floor, Virtual }
+public enum TileType { Impassable, Floor, Virtual }
 
 //Basic Tile unit.
-//They can be of different types, and they're used to manage the grid-like map.
+//Positional unit that composes the grid-like map. Things don't exactly need to be on Tiles, but the tile grid is useful for certain operations.
 public class Tile : IAtom
 {
-    public WorldData World;
+    public WorldData WorldData;
 
-    private TileType _type = TileType.Void;
+    private TileType _type = TileType.Impassable;
 
     public TileType Type
     {
@@ -41,7 +41,7 @@ public class Tile : IAtom
 
     public Tile(WorldData world, int x, int y, int z)
     {
-        this.World = world;
+        this.WorldData = world;
         this.X = x;
         this.Y = y;
         this.Z = z;
@@ -61,13 +61,13 @@ public class Tile : IAtom
         Tile[] neighbors = new Tile[4];
 
         //N
-        neighbors[0] = World.WorldTiles[X, Z+1];
+        neighbors[0] = WorldData.WorldTiles[X, Z+1];
         //E
-        neighbors[1] = World.WorldTiles[X+1, Z];
+        neighbors[1] = WorldData.WorldTiles[X+1, Z];
         //S
-        neighbors[2] = World.WorldTiles[X, Z-1];
+        neighbors[2] = WorldData.WorldTiles[X, Z-1];
         //W
-        neighbors[3] = World.WorldTiles[X-1, Z];
+        neighbors[3] = WorldData.WorldTiles[X-1, Z];
 
         return neighbors;
     }
@@ -82,21 +82,21 @@ public class Tile : IAtom
         Tile[] neighbors = new Tile[8];
 
         //N
-        neighbors[0] = World.WorldTiles[X, Z + 1];
+        neighbors[0] = WorldData.WorldTiles[X, Z + 1];
         //E
-        neighbors[1] = World.WorldTiles[X + 1, Z];
+        neighbors[1] = WorldData.WorldTiles[X + 1, Z];
         //S
-        neighbors[2] = World.WorldTiles[X, Z - 1];
+        neighbors[2] = WorldData.WorldTiles[X, Z - 1];
         //W
-        neighbors[3] = World.WorldTiles[X - 1, Z];
+        neighbors[3] = WorldData.WorldTiles[X - 1, Z];
         //NE
-        neighbors[4] = World.WorldTiles[X + 1, Z + 1];
+        neighbors[4] = WorldData.WorldTiles[X + 1, Z + 1];
         //NW
-        neighbors[5] = World.WorldTiles[X - 1, Z + 1];
+        neighbors[5] = WorldData.WorldTiles[X - 1, Z + 1];
         //SE
-        neighbors[6] = World.WorldTiles[X + 1, Z - 1];
+        neighbors[6] = WorldData.WorldTiles[X + 1, Z - 1];
         //SW
-        neighbors[7] = World.WorldTiles[X - 1, Z - 1];
+        neighbors[7] = WorldData.WorldTiles[X - 1, Z - 1];
 
         return neighbors;
     }

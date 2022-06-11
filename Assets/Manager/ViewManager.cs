@@ -20,12 +20,6 @@ public class ViewManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isFollowingPlayer)
-        {
-            MainCamera.transform.position = new Vector3(Player.transform.position.x, 10.4f, Player.transform.position.z - 20f);
-
-        }
-
     }
 
     public void MoveCamera(Vector3 Movement)

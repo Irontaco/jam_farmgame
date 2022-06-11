@@ -7,24 +7,24 @@ public class WorldMesh : MonoBehaviour
 {
 
     //Mesh we're currently assigned
-    public Mesh CurrentMesh;
-    public WorldData CurrentWorldData;
+    public Mesh MeshData;
+    public WorldData WorldData;
 
-    public MeshCollider MeshColl;
+    private MeshCollider MeshCollider;
 
     //Keeps track of the quad index correlated to a Tile.
-    public Dictionary<Tile, int> TileVertexLibrary;
+    private Dictionary<Tile, int> TileVertexLibrary;
 
     //Array of all Uvs in the worldmesh
-    public Vector2[] Uvs;
+    public Vector2[] UVs;
 
     private void Start()
     {
-        Uvs = CurrentMesh.uv;
+        UVs = MeshData.uv;
 
-        MeshColl = gameObject.AddComponent<MeshCollider>();
+        MeshCollider = gameObject.AddComponent<MeshCollider>();
 
-        MeshColl.sharedMesh = CurrentMesh;
+        MeshCollider.sharedMesh = MeshData;
     }
     public void MapTilesToMeshData()
     {
@@ -32,15 +32,16 @@ public class WorldMesh : MonoBehaviour
 
         int quadIndex = 0;
 
-        for(int x = 0; x < CurrentWorldData.SizeX; x++)
+        for(int x = 0; x < WorldData.SizeX; x++)
         {
-            for(int z = 0; z < CurrentWorldData.SizeZ; z++)
+            for(int z = 0; z < WorldData.SizeZ; z++)
             {
-                Tile tile = CurrentWorldData.WorldTiles[x, z];
+                Tile tile = WorldData.WorldTiles[x, z];
 
                 TileVertexLibrary.Add(tile, quadIndex);
 
                 quadIndex += 4;
+
             }
         }
     }
@@ -53,17 +54,17 @@ public class WorldMesh : MonoBehaviour
             return;
         }
 
-        Uvs[TileVertexLibrary[tile] + 0] = spriteUvs[0];
-        Uvs[TileVertexLibrary[tile] + 1] = spriteUvs[1];
-        Uvs[TileVertexLibrary[tile] + 2] = spriteUvs[2];
-        Uvs[TileVertexLibrary[tile] + 3] = spriteUvs[3];
+        UVs[TileVertexLibrary[tile] + 0] = spriteUvs[0];
+        UVs[TileVertexLibrary[tile] + 1] = spriteUvs[1];
+        UVs[TileVertexLibrary[tile] + 2] = spriteUvs[2];
+        UVs[TileVertexLibrary[tile] + 3] = spriteUvs[3];
 
     }
 
     public void UpdateWorldMesh()
     {
-        CurrentMesh.uv = Uvs;
-        CurrentMesh.RecalculateNormals();
+        MeshData.uv = UVs;
+        MeshData.RecalculateNormals();
     }
 
 }

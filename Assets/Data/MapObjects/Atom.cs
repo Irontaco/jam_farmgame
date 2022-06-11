@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Atom is used as a base for anything that can exist in-game. 
-//It has the very basic data of every object and entity.
-//This is basis of the data layer!
+//Holds basic position data + contents.
 public interface IAtom
 {
     //Positional markers...
@@ -16,6 +15,7 @@ public interface IAtom
 
     //List of anything contained within this specific unit.
     List<object> Contents { get;  set; }
+
 }
 
 public static class Extensions

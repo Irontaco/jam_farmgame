@@ -18,7 +18,6 @@ public class WorldData
     //List of tiles within the world.
     public Tile[,] WorldTiles;
 
-
     public WorldData(int sizeX, int sizeZ)
     {
         SizeX = sizeX;

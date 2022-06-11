@@ -11,9 +11,9 @@ public class WorldTileManager
 {
 
     public WorldData WorldData;
-    public WorldMesh WorldMesh;
+    private GameObject WorldMeshGO;
 
-    public Dictionary<int, List<Vector2>> TileSpriteLibrary;
+    private Dictionary<int, List<Vector2>> TileSpriteLibrary;
 
     //1 - floor_purple
     //2 - floor_blue
@@ -23,14 +23,25 @@ public class WorldTileManager
     //6-16 - unused
     //17-42 - space
 
-    public WorldTileManager(WorldData worldData, WorldMesh worldMesh)
+    public WorldTileManager(WorldData worldData)
     {
-        WorldMesh = worldMesh;
         WorldData = worldData;
         TileSpriteLibrary = AtlasMapper.SubdivideAtlas(8, AssetLoader.AtlasLibrary["TileAtlas"]);
 
+        //Instantiate a GameObject that represents the World Mesh, MeshBuilder will be the parent.
+        WorldMeshGO = MeshBuilder.BuildWorldMesh(new Vector2(WorldData.SizeX, WorldData.SizeZ), "TileAtlas");
+        WorldMeshGO.transform.parent = GameObject.Find("MeshBuilder").transform;
+
+        //Create a WorldMesh component that holds the mesh data.
+        WorldMesh WorldMesh = WorldMeshGO.AddComponent<WorldMesh>();
+        WorldMesh.MeshData = WorldMeshGO.GetComponent<MeshFilter>().mesh;
+        WorldMesh.WorldData = WorldData;
+
+        //Makes sure the center of each tile in the scene space maps exactly to coordinates in the WorldData array
+        WorldMeshGO.transform.position = new Vector3(-0.5f, 0, -0.5f);
+
         WorldMesh.MapTilesToMeshData();
-        WorldMesh.Uvs = WorldMesh.CurrentMesh.uv;
+        WorldMesh.UVs = WorldMesh.MeshData.uv;
 
         foreach(Tile tile in WorldData.WorldTiles)
         {
@@ -48,7 +59,7 @@ public class WorldTileManager
 
         switch (type)
         {
-            case TileType.Void:
+            case TileType.Impassable:
                 tile.Examine = "This is open space!";
                 break;
             case TileType.Floor:
