@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public enum TileType { Impassable, Floor, Virtual }
 
@@ -9,26 +7,16 @@ public enum TileType { Impassable, Floor, Virtual }
 //Positional unit that composes the grid-like map. Things don't exactly need to be on Tiles, but the tile grid is useful for certain operations.
 public class Tile : IAtom
 {
-    public WorldData WorldData;
+    public readonly WorldData WorldData;
 
-    private TileType _type = TileType.Impassable;
-
-    public TileType Type
-    {
-        get { return _type; }
-        set
-        {
-            //Keep track of the old type before we replace it.
-            TileType oldtype = _type;
-            _type = value;
-
-        }
-    }
+    public TileType Type { get; set; }
 
     //Atom data
     public int X { get; set; }
     public int Y { get; set; }
     public int Z { get; set; }
+
+    public int QuadStartIndex => (X + Z * WorldData.SizeX) * 4;
 
     public string Examine
     {
@@ -64,16 +52,14 @@ public class Tile : IAtom
         this.Z = z;
     }
 
-    public Tile(WorldData world, int x, int y, int z)
+    public Tile(WorldData world, int x, int y, int z) : this(x, y, z)
     {
         this.WorldData = world;
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
 
-        this.Contents = new List<object>();
-        this.Contents.Add(this);
-
+        this.Contents = new List<object>
+        {
+            this
+        };
     }
 
     /// <summary>

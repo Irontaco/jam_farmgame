@@ -41,7 +41,6 @@ public class WorldTileManager
         //Makes sure the center of each tile in the scene space maps exactly to coordinates in the WorldData array
         WorldMeshGO.transform.position = new Vector3(-0.5f, 0, -0.5f);
 
-        WorldMeshData.MapTilesToMeshData();
         WorldMeshData.UVs = WorldMeshData.MeshData.uv;
 
         foreach(Tile tile in WorldData.WorldTiles)
