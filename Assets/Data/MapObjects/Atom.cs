@@ -11,10 +11,10 @@ public interface IAtom
     int Y { get; set; }
     int Z { get; set; }
 
-    string Examine { get; set; }
+    string Examine { get; }
 
     //List of anything contained within this specific unit.
-    List<object> Contents { get;  set; }
+    List<object> Contents { get; }
 
 }
 

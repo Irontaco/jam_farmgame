@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Generates UV coords based on a given atlas.
 /// </summary>
-public class AtlasMapper
+public static class AtlasMapper
 {
 
     /// <summary>
@@ -16,9 +16,9 @@ public class AtlasMapper
     /// <param name="spritePerSide">How many sprites are there per side?</param>
     /// <param name="atlas">Sprite atlas to split</param>
     /// <returns></returns>
-    public static Dictionary<int, List<Vector2>> SubdivideAtlas(int spritePerSide, Sprite atlas)
+    public static Dictionary<int, Vector2[]> SubdivideAtlas(int spritePerSide, Sprite atlas)
     {
-        Dictionary<int, List<Vector2>> TiledSprites = new Dictionary<int, List<Vector2>>();
+        Dictionary<int, Vector2[]> TiledSprites = new Dictionary<int, Vector2[]>();
 
         float uvStep = 1f / spritePerSide;
 
@@ -29,9 +29,6 @@ public class AtlasMapper
         {
             for (float x = 0f; x < spritePerSide; x++)
             {
-
-                List<Vector2> currentUVList = new List<Vector2>();
-
                 float currentStepX = x / spritePerSide;
                 float currentStepY = y / spritePerSide;
 
@@ -40,10 +37,13 @@ public class AtlasMapper
                 Vector2 uv_topleft = new Vector2(currentStepX, currentStepY + uvStep);
                 Vector2 uv_topright = new Vector2(currentStepX + uvStep, currentStepY + uvStep);
 
-                currentUVList.Add(uv_bottomleft);
-                currentUVList.Add(uv_bottomright);
-                currentUVList.Add(uv_topleft);
-                currentUVList.Add(uv_topright);
+                Vector2[] currentUVList =
+                {
+                    uv_bottomleft,
+                    uv_bottomright,
+                    uv_topleft,
+                    uv_topright
+                };
 
                 TiledSprites.Add(currentSprite, currentUVList);
 

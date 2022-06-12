@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,8 +29,32 @@ public class Tile : IAtom
     public int X { get; set; }
     public int Y { get; set; }
     public int Z { get; set; }
-    public string Examine { get; set; }
-    public List<object> Contents { get; set; }
+
+    public string Examine
+    {
+        get
+        {
+            string retVal;
+            switch (Type)
+            {
+                case TileType.Floor:
+                    retVal = "There's some flooring here.";
+                    break;
+                case TileType.Impassable:
+                    retVal = "This is open space!";
+                    break;
+                case TileType.Virtual:
+                    retVal = "You ain't supposed to look at this!";
+                    break;
+                default:
+                    throw new IndexOutOfRangeException($"Unhandled tile type {Type}");
+            }
+
+            retVal += $" TileInfo = [X={X}, Z={Z}] [ContentsCount = {Contents.Count}]";
+            return retVal;
+        }
+    }
+    public List<object> Contents { get; }
 
     //Constructor for tile-check operations...
     public Tile(int x, int y, int z)

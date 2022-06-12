@@ -14,7 +14,7 @@ public class WorldTileManager
     private GameObject WorldMeshGO;
     public WorldMesh WorldMeshData;
 
-    private Dictionary<int, List<Vector2>> TileSpriteLibrary;
+    private Dictionary<int, Vector2[]> TileSpriteLibrary;
 
     //0 - floor_purple
     //1 - floor_blue
@@ -60,20 +60,15 @@ public class WorldTileManager
         switch (type)
         {
             case TileType.Impassable:
-                tile.Examine = "This is open space!";
                 WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[17]);
                 break;
             case TileType.Floor:
-                tile.Examine = "There's some flooring here.";
                 WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[1]);
                 break;
             case TileType.Virtual:
-                tile.Examine = "You ain't supposed to look at this!";
                 WorldMeshData.SetTileTexture(tile, TileSpriteLibrary[4]);
                 break;
         }
-
-        tile.Examine += " TileInfo = [X=" + tile.X + ", Z=" + tile.Z + "] [ContentsCount = " + tile.Contents.Count + "]";
     }
 
     /// <summary>
@@ -86,10 +81,15 @@ public class WorldTileManager
             Debug.LogError("WORLDTILEMANAGER = 'We were provided with a null Tile!'");
             return;
         }
+
+        if (tile.Type == type)
+        {
+            //do not update the tile texture if the current type matches the input type
+            return;
+        }
         
         tile.Type = type;
         OnTileUpdate(tile);
-
     }
 
     /// <summary>
@@ -98,25 +98,21 @@ public class WorldTileManager
     public Tile GetTileAt(int x, int z)
     {
         //Checks for the Tile being out of the World array dimensions, returns null if so.
-        if (x >= WorldData.WorldDataInstance.SizeX || x < 0 || z >= WorldData.WorldDataInstance.SizeZ || z < 0)
+        if (x >= WorldData.SizeX || x < 0 || z >= WorldData.SizeZ || z < 0)
         {
             Debug.LogError("WORLDTILEMANAGER = 'Tile at (" + x + "," + z + ") is out of range! Did we select something outside bounds?'");
             return null;
-
         }
 
         try
         {
             return WorldData.WorldTiles[x, z];
-
         }
         catch (IndexOutOfRangeException)
         {
             Debug.LogError("WORLDTILEMANAGER = 'Tile was somehow passed through, while being out of range. INFORMATION [" + "X = " + x + " Z = " + z + "]'");
             return null;
-
         }
-
     }
 
 }

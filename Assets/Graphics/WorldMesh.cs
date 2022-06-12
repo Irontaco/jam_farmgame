@@ -26,27 +26,24 @@ public class WorldMesh : MonoBehaviour
 
         MeshCollider.sharedMesh = MeshData;
     }
+
     public void MapTilesToMeshData()
     {
         TileVertexLibrary = new Dictionary<Tile, int>();
-
-        int quadIndex = 0;
 
         for(int z = 0; z < WorldData.SizeZ; z++)
         {
             for(int x = 0; x < WorldData.SizeX; x++)
             {
                 Tile tile = WorldData.WorldTiles[x, z];
+                int quadIndex = (x * 4) + (z * 4 * WorldData.SizeX);
 
                 TileVertexLibrary.Add(tile, quadIndex);
-
-                quadIndex += 4;
-
             }
         }
     }
 
-    public void SetTileTexture(Tile tile, List<Vector2> spriteUvs)
+    public void SetTileTexture(Tile tile, Vector2[] spriteUvs)
     {
         if (tile == null)
         {
@@ -54,17 +51,17 @@ public class WorldMesh : MonoBehaviour
             return;
         }
 
-        UVs[TileVertexLibrary[tile] + 0] = spriteUvs[0];
-        UVs[TileVertexLibrary[tile] + 1] = spriteUvs[1];
-        UVs[TileVertexLibrary[tile] + 2] = spriteUvs[2];
-        UVs[TileVertexLibrary[tile] + 3] = spriteUvs[3];
+        int quadIndex = TileVertexLibrary[tile];
+        UVs[quadIndex + 0] = spriteUvs[0];
+        UVs[quadIndex + 1] = spriteUvs[1];
+        UVs[quadIndex + 2] = spriteUvs[2];
+        UVs[quadIndex + 3] = spriteUvs[3];
 
     }
 
     public void UpdateWorldMesh()
     {
         MeshData.uv = UVs;
-        MeshData.RecalculateNormals();
+        MeshData.RecalculateNormals(); //TODO: do we need this?
     }
-
 }

@@ -11,11 +11,11 @@ public class InputManager
     [Flags]
     public enum Direction
     {
-        None = 0,
-        Up = 1 << 0,
-        Down = 1 << 1,
-        Left = 1 << 2,
-        Right = 1 << 3
+        None = 0,       //0000, no bits
+        Up = 1 << 0,    //0001, least significant bit
+        Down = 1 << 1,  //0010
+        Left = 1 << 2,  //0100
+        Right = 1 << 3  //1000, most significant bit
     }
 
     public InputManager(GameStateManager gameStateManager)
