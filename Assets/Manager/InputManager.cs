@@ -73,12 +73,13 @@ public class InputManager
         new Dictionary<Direction, Vector2>
         {
             { Direction.Up, new Vector2(0f, 1f) },
-            //{ Direction.Up | Direction.Left, new Vector2(-1f, 1f).normalized },
             { Direction.Left, new Vector2(-1f, 0f) },
-            //{ Direction.Left | Direction.Down, new Vector2(-1f, -1f).normalized },
             { Direction.Down, new Vector2(0f, -1f) },
-            //{ Direction.Down | Direction.Right, new Vector2(1f, -1f).normalized },
             { Direction.Right, new Vector2(1f, 0f) },
+            //uncomment these to implement diagonal animations
+            //{ Direction.Up | Direction.Left, new Vector2(-1f, 1f).normalized },
+            //{ Direction.Left | Direction.Down, new Vector2(-1f, -1f).normalized },
+            //{ Direction.Down | Direction.Right, new Vector2(1f, -1f).normalized },
             //{ Direction.Right | Direction.Up, new Vector2(1f, 1f).normalized }
         }.ToImmutableDictionary();
     public static Direction MovementToDirection(Vector2 movement)
@@ -86,7 +87,10 @@ public class InputManager
         if (movement.sqrMagnitude < float.Epsilon * 4f) { return Direction.None; }
         movement = movement.normalized;
         return dirToMovementExtremes
+            // Order the extremes based on how close they are to the input movement direction
             .OrderByDescending(kvp => Vector2.Dot(kvp.Value, movement))
+            // Prioritize horizontal extremes
+            .ThenByDescending(kvp => kvp.Key)
             .First().Key;
     }
 
