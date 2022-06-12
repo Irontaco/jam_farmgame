@@ -23,30 +23,36 @@ public class InputManager
         this.gameStateManager = gameStateManager;
     }
 
-    public void GetWorldSpaceMousePosition()
+    public GameObject GetGameObjectAtMousePosition(out Vector3 rayHitPos)
     {
-        Ray Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        
-        if(Physics.Raycast(Ray, out RaycastHit RayHit))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit rayHit))
         {
-            Debug.DrawLine(Ray.origin, RayHit.point);
-
-            //GameObject DebugTileMarker = GameObject.CreatePrimitive(PrimitiveType.Quad);
-
-            Tile DebugTileGet = gameStateManager.WorldTileManager.GetTileAt(Mathf.RoundToInt(RayHit.point.x), Mathf.RoundToInt(RayHit.point.z));
-
-            Debug.Log("TILEPOS X = [" + DebugTileGet.X + "] Z = [" + DebugTileGet.Z + "]");
-            Debug.Log("RAYHITPOS X = [" + Mathf.RoundToInt(RayHit.point.x) + "] Z = [" + Mathf.RoundToInt(RayHit.point.z) + "]");
-            gameStateManager.WorldTileManager.ChangeTileType(DebugTileGet, TileType.Virtual);
-            gameStateManager.WorldTileManager.WorldMeshData.UpdateWorldMesh();
-
-            /*DebugTileMarker.transform.position = new Vector3(DebugTileGet.X, 0.05f, DebugTileGet.Z);
-            DebugTileMarker.transform.Rotate(new Vector3(90f, 0, 0));
-            DebugTileMarker.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);*/
-
-
+            rayHitPos = rayHit.point;
+            return rayHit.rigidbody.gameObject;
         }
+        rayHitPos = default;
+        return null;
+    }
 
+    public Tile GetTileAtMousePosition(out Vector3 rayHitPos)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane fieldPlane = new Plane(Vector3.up, 0f);
+        if (fieldPlane.Raycast(ray, out float distance))
+        {
+            rayHitPos = ray.GetPoint(distance);
+            int x = Mathf.RoundToInt(rayHitPos.x);
+            int z = Mathf.RoundToInt(rayHitPos.z);
+            if (x < 0 || x >= gameStateManager.WorldTileManager.WorldData.SizeX
+                || z < 0 || z >= gameStateManager.WorldTileManager.WorldData.SizeZ)
+            {
+                return null;
+            }
+            return gameStateManager.WorldTileManager.GetTileAt(x, z);
+        }
+        rayHitPos = default;
+        return null;
     }
 
     public Vector2 GetMovement()

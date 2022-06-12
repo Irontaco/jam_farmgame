@@ -28,6 +28,16 @@ public class GameStateManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        InputManager.GetWorldSpaceMousePosition();
+        var tile = InputManager.GetTileAtMousePosition(out var rayHitPos);
+        if (tile != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawLine(ray.origin, rayHitPos);
+
+            Debug.Log($"TILEPOS X = [{tile.X}] Z = [{tile.Z}]");
+            Debug.Log($"RAYHITPOS X = [{Mathf.RoundToInt(rayHitPos.x)}] Z = [{Mathf.RoundToInt(rayHitPos.z)}]");
+            WorldTileManager.ChangeTileType(tile, TileType.Virtual);
+            WorldTileManager.WorldMeshData.UpdateWorldMesh();
+        }
     }
 }
