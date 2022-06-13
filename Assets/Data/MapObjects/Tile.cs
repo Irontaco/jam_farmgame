@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Data.MapObjects;
+using System;
 using System.Collections.Generic;
 
 public enum TileType { Impassable, Floor, Virtual }
@@ -17,6 +18,8 @@ public class Tile : IAtom
     public int Z { get; set; }
 
     public int QuadStartIndex => (X + Z * WorldData.SizeX) * 4;
+
+    public Soil Soil { get; set; }
 
     public string Examine
     {
@@ -55,6 +58,7 @@ public class Tile : IAtom
     public Tile(WorldData world, int x, int y, int z) : this(x, y, z)
     {
         this.WorldData = world;
+        this.Soil = new Soil(this);
 
         this.Contents = new List<object>
         {
