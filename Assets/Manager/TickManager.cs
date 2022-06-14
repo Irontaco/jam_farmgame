@@ -1,22 +1,54 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-namespace Assets.Manager
+//Handles time that passes in-game.
+public class TickManager : MonoBehaviour
 {
-    //Handles time that passes in-game.
-    public class TickManager : MonoBehaviour
+    //Unity's Physics system calls FixedUpdate 50 times per second ( 0.02 between calls )
+    //Assuming we want one tick per second...
+    public float CurrentTickTime;
+
+    //Keeps track of how many ticks have happened so far.
+    public int ElapsedTicks;
+
+    //Let's assume for now we want our round to last 600 ticks/seconds - or 10 minutes.
+    int LevelTicks = 600;
+
+    //We call changes on this as we move along.
+    private GameStateManager GameStateManager;
+
+    // Use this for initialization
+    void Start()
+    {
+        GameStateManager = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
+    }
+
+    void FixedUpdate()
     {
 
-        // Use this for initialization
-        void Start()
+        if(ElapsedTicks == LevelTicks)
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        if(CurrentTickTime >= 1f)
         {
+            GameStateManager.WorldTileManager.OnTickPassed();
+
+            ElapsedTicks++;
+            CurrentTickTime = 0f;
 
         }
+
+        CurrentTickTime += Time.deltaTime;
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 }
