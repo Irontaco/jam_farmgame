@@ -45,6 +45,7 @@ public class WorldTileManager
 
         foreach(Tile tile in WorldData.WorldTiles)
         {
+            tile.Soil = new Soil(tile);
             ChangeTileType(tile, TileType.Floor);
         }
 
@@ -111,6 +112,15 @@ public class WorldTileManager
         {
             Debug.LogError("WORLDTILEMANAGER = 'Tile was somehow passed through, while being out of range. INFORMATION [" + "X = " + x + " Z = " + z + "]'");
             return null;
+        }
+    }
+
+    public void OnTickPassed()
+    {
+
+        foreach(Tile tile in WorldData.WorldTiles)
+        {
+            tile.Soil.AvailableEnergy++;
         }
     }
 
