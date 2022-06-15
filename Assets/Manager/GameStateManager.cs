@@ -28,7 +28,7 @@ public class GameStateManager : MonoBehaviour
     void Start()
     { 
         //Create the world data, this should be done first always!
-        CurrentWorldData = new WorldData(100 , 100);
+        CurrentWorldData = new WorldData(16 , 64);
 
         //Instantiate the WorldTileManager, which creates the necessary structures for the map and it's rendering to begin.
         WorldTileManager = new WorldTileManager(CurrentWorldData);
