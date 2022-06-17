@@ -10,11 +10,13 @@ public class GameStateManager : MonoBehaviour
 
     public WorldTileManager WorldTileManager { get; private set; }
 
-    public TickManager TickManager { get; private set; }
+    public TickManager TickManager { get; set; }
 
     public InputManager InputManager { get; private set; }
     
     public WorldData CurrentWorldData { get; private set; }
+
+    public EnemyController EnemyController { get; private set; }
 
     public Config CurrentConfig { get; private set; } = Config.Default;
 
@@ -35,11 +37,11 @@ public class GameStateManager : MonoBehaviour
 
         InputManager = new InputManager(this);
 
-        TickManager = new TickManager();
-
         SoilDebugTextGroup = new List<GameObject>();
 
+        TickManager = GetComponent<TickManager>();
 
+        EnemyController = GetComponent<EnemyController>();
     }
 
     private void FixedUpdate()
@@ -93,6 +95,19 @@ public class GameStateManager : MonoBehaviour
             WorldTileManager.ChangeTileType(LastSelectedTile, TileType.Floor);
 
         }
+
+    }
+
+    public void OnTickPassed()
+    {
+        EnemyController.PreWaveElapsedTicks++;
+
+        if (EnemyController.WaveStarted)
+        {
+            EnemyController.WaveElapsedTicks++;
+        }
+
+
 
     }
 }

@@ -14,15 +14,18 @@ public class TickManager : MonoBehaviour
     public int ElapsedTicks;
 
     //Let's assume for now we want our round to last 600 ticks/seconds - or 10 minutes.
-    int LevelTicks = 600;
+    public int LevelTicks = 600;
 
     //We call changes on this as we move along.
     private GameStateManager GameStateManager;
 
+    public delegate void OnLevelOver();
+    public static event OnLevelOver onLevelOver;
+
     // Use this for initialization
     void Start()
     {
-        GameStateManager = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
+        this.GameStateManager = gameObject.gameObject.GetComponent<GameStateManager>();
     }
 
     void FixedUpdate()
@@ -31,12 +34,13 @@ public class TickManager : MonoBehaviour
         if(ElapsedTicks == LevelTicks)
         {
 
+
+
         }
 
         if(CurrentTickTime >= 1f)
         {
-            GameStateManager.WorldTileManager.OnTickPassed();
-
+            GameStateManager.OnTickPassed();
             ElapsedTicks++;
             CurrentTickTime = 0f;
 
